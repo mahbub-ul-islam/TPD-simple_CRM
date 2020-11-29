@@ -1,9 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 # Create your views here.
 from django.http import HttpResponse
 
 from .models import *
+from .forms import OrderForm
 
 
 def home(request):
@@ -34,3 +35,35 @@ def customer(request, pk):
                'total_order':total_order}
     
     return render(request, 'accounts/customer.html', context)
+
+
+
+
+
+def createOrder(request):
+
+    form = OrderForm()
+
+    if request.method == 'POST':
+        #print('Printing Post : ', request.POST)
+        form = OrderForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+    
+    context = {'form':form}
+
+    return render(request, 'accounts/order_form.html', context)
+
+
+
+
+
+
+
+
+
+
+
+
