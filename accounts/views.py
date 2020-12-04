@@ -118,6 +118,30 @@ def loginPage(request):
         if user is not None:
             login(request, user)
             return redirect('home')
+        else:
+            messages.info(request, 'Username Or Password is incorrect')
 
     context = {}
     return render(request, 'accounts/login.html', context)
+
+
+
+def logoutUser(request):
+    logout(request)
+    return redirect('login')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
