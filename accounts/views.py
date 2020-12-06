@@ -13,12 +13,13 @@ from django.contrib.auth.decorators import login_required
 from .models import *
 from .forms import OrderForm, CreateUserForm
 from .filters import OrderFilter
-from .decorators import unauthenticated_user, allowed_users
+from .decorators import unauthenticated_user, allowed_users, admin_only
 
 
 
 @login_required(login_url='login')
-@allowed_users(allowed_roles=['admin'])
+# @allowed_users(allowed_roles=['admin'])
+@admin_only
 def home(request):
     customers = Customer.objects.all()
     orders = Order.objects.all()
@@ -30,6 +31,13 @@ def home(request):
                'total_order':total_order, 'delivered':delivered, 'pending':pending
                }
     return render(request, 'accounts/dashboard.html', context)
+
+
+
+def userPage(request):
+    context = {}
+    return render(request, 'accounts/user.html', context)
+
 
 
 @login_required(login_url='login')
