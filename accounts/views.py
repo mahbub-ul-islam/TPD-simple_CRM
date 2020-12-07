@@ -35,11 +35,21 @@ def home(request):
     return render(request, 'accounts/dashboard.html', context)
 
 
+
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['customer'])
 def userPage(request):
-    context = {}
+    orders = request.user.customer.order_set.all()
+
+    total_order = orders.count()
+    delivered = orders.filter(status='Delivered').count()
+    pending = orders.filter(status='Pending').count()
+    
+    
+    context = {'orders':orders, 'total_order':total_order,
+               'delivered':delivered, 'pending':pending}
     return render(request, 'accounts/user.html', context)
+
 
 
 
